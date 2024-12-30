@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kepribadian Kamu</title>
+    <link rel="icon" href="icon.png" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #141E30, #243B55);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            font-size: 1.5rem;
+            border-radius: 25px;
+            border: none;
+            outline: none;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FF512F, #DD2476);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 8px 20px rgba(255, 81, 47, 0.5);
+        }
+
+        .personality {
+            margin-top: 40px;
+            font-size: 1.8rem;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .animation-box {
+            margin-top: 30px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            background: linear-gradient(45deg, #FFD700, #FF8C00);
+            box-shadow: 0px 8px 20px rgba(255, 140, 0, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0px 8px 20px rgba(255, 140, 0, 0.5);
+            }
+            50% {
+                transform: scale(1.2);
+                box-shadow: 0px 12px 30px rgba(255, 140, 0, 0.7);
+            }
+        }
+
+        /* Animasi visualisasi audio */
+        .audio-visualizer {
+            margin-top: 40px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .audio-visualizer .bar {
+            width: 10px;
+            height: 100%;
+            margin: 0 3px;
+            background-color: #ff512f;
+            animation: growShrink 0.5s infinite alternate;
+        }
+
+        .audio-visualizer .bar:nth-child(odd) {
+            animation-duration: 0.7s;
+        }
+
+        .audio-visualizer .bar:nth-child(even) {
+            animation-duration: 0.6s;
+        }
+
+        @keyframes growShrink {
+            0% {
+                height: 50%;
+            }
+            100% {
+                height: 100%;
+            }
+        }
+
+        audio {
+            display: none;
+        }
+
+        /* Media Queries untuk Responsif */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem; /* Ukuran judul lebih kecil di layar kecil */
+            }
+
+            input[type="text"] {
+                width: 80%; /* Lebar input menyesuaikan dengan layar */
+                font-size: 1.2rem;
+            }
+
+            button {
+                width: 80%; /* Lebar tombol menyesuaikan layar */
+                font-size: 1.2rem;
+            }
+
+            .personality {
+                font-size: 1.5rem;
+                padding: 20px;
+            }
+
+            .audio-visualizer {
+                width: 80px;
+                height: 80px;
+            }
+
+            .audio-visualizer .bar {
+                width: 8px;
+                margin: 0 2px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem; /* Ukuran judul lebih kecil di layar lebih kecil */
+            }
+
+            input[type="text"] {
+                width: 90%; /* Lebar input lebih besar di layar sangat kecil */
+                font-size: 1rem;
+            }
+
+            button {
+                width: 90%; /* Lebar tombol lebih besar di layar sangat kecil */
+                font-size: 1rem;
+            }
+
+            .personality {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+
+            .audio-visualizer {
+                width: 60px;
+                height: 60px;
+            }
+
+            .audio-visualizer .bar {
+                width: 6px;
+                margin: 0 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Temukan Kepribadianmu</h1>
+    <input type="text" id="nameInput" placeholder="Masukkan nama kamu...">
+    <button id="revealButton">Tampilkan Kepribadian</button>
+
+    <div id="result" style="display: none;">
+        <div class="personality" id="personalityText"></div>
+        <div class="audio-visualizer" id="audioVisualizer">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <audio id="backgroundMusic" autoplay></audio>
+    </div>
+    <script>
+       const personalityData = {
+    "A": {
+        description: "Kamu seorang pemimpin yang karismatik dan berani.",
+        music: "https://www.bensound.com/bensound-music/bensound-epic.mp3"
+    },
+    "B": {
+        description: "Kamu seorang yang ramah, penuh perhatian, dan setia.",
+        music: "https://www.bensound.com/bensound-music/bensound-creativeminds.mp3"
+    },
+    "C": {
+        description: "Kamu adalah seorang pemikir kreatif dengan jiwa seni yang tinggi.",
+        music: "https://www.bensound.com/bensound-music/bensound-sunny.mp3"
+    },
+    "D": {
+        description: "Kamu seorang yang praktis dan selalu mencari solusi.",
+        music: "https://www.bensound.com/bensound-music/bensound-acousticbreeze.mp3"
+    },
+    "E": {
+        description: "Kamu memiliki energi positif yang menular ke orang lain.",
+        music: "https://www.bensound.com/bensound-music/bensound-jazzyfrenchy.mp3"
+    },
+    "F": {
+        description: "Kamu adalah pribadi yang penuh cinta dan dedikasi.",
+        music: "https://www.bensound.com/bensound-music/bensound-romantic.mp3"
+    },
+    "G": {
+        description: "Kamu memiliki kebijaksanaan yang menginspirasi banyak orang.",
+        music: "https://www.bensound.com/bensound-music/bensound-onceagain.mp3"
+    },
+    "H": {
+        description: "Kamu dikenal karena kerja keras dan semangat pantang menyerah.",
+        music: "https://www.bensound.com/bensound-music/bensound-ukulele.mp3"
+    },
+    "I": {
+        description: "Kamu seorang yang inovatif dan selalu punya ide baru.",
+        music: "https://www.bensound.com/bensound-music/bensound-goinghigher.mp3"
+    },
+    "J": {
+        description: "Kamu adalah sumber kebahagiaan bagi orang di sekitarmu.",
+        music: "https://www.bensound.com/bensound-music/bensound-funkyelement.mp3"
+    },
+    "K": {
+        description: "Kamu memiliki kemampuan alami untuk memimpin tim dengan baik.",
+        music: "https://www.bensound.com/bensound-music/bensound-memories.mp3"
+    },
+    "L": {
+        description: "Kamu memiliki kepribadian yang hangat dan penuh empati.",
+        music: "https://www.bensound.com/bensound-music/bensound-littleidea.mp3"
+    },
+    "M": {
+        description: "Kamu adalah orang yang sangat fokus dan berdedikasi.",
+        music: "https://www.bensound.com/bensound-music/bensound-betterdays.mp3"
+    },
+    "N": {
+        description: "Kamu dikenal dengan kreativitas tanpa batas.",
+        music: "https://www.bensound.com/bensound-music/bensound-dreams.mp3"
+    },
+    "O": {
+        description: "Kamu seorang yang optimis dan selalu melihat sisi baik dalam segalanya.",
+        music: "https://www.bensound.com/bensound-music/bensound-newdawn.mp3"
+    },
+    "P": {
+        description: "Kamu adalah seseorang yang sangat praktis dan berpikir logis.",
+        music: "https://www.bensound.com/bensound-music/bensound-slowmotion.mp3"
+    },
+    "Q": {
+        description: "Kamu memiliki jiwa petualang yang luar biasa.",
+        music: "https://www.bensound.com/bensound-music/bensound-happiness.mp3"
+    },
+    "R": {
+        description: "Kamu adalah pemikir strategis dengan wawasan yang luas.",
+        music: "https://www.bensound.com/bensound-music/bensound-tomorrow.mp3"
+    },
+    "S": {
+        description: "Kamu memiliki ketenangan yang menenangkan orang lain.",
+        music: "https://www.bensound.com/bensound-music/bensound-sweet.mp3"
+    },
+    "T": {
+        description: "Kamu adalah pendukung terbaik dalam kehidupan teman-temanmu.",
+        music: "https://www.bensound.com/bensound-music/bensound-energy.mp3"
+    },
+    "U": {
+        description: "Kamu penuh rasa ingin tahu dan cinta belajar.",
+        music: "https://www.bensound.com/bensound-music/bensound-adventure.mp3"
+    },
+    "V": {
+        description: "Kamu memiliki visi besar dan semangat mencapai tujuan.",
+        music: "https://www.bensound.com/bensound-music/bensound-actionable.mp3"
+    },
+    "W": {
+        description: "Kamu dikenal dengan rasa humor dan keceriaanmu.",
+        music: "https://www.bensound.com/bensound-music/bensound-happyrock.mp3"
+    },
+    "X": {
+        description: "Kamu adalah pribadi yang unik dengan bakat luar biasa.",
+        music: "https://www.bensound.com/bensound-music/bensound-tenderness.mp3"
+    },
+    "Y": {
+        description: "Kamu selalu mencari kedamaian dan harmoni dalam hidup.",
+        music: "https://www.bensound.com/bensound-music/bensound-buddy.mp3"
+    },
+    "Z": {
+        description: "Kamu penuh misteri dan daya tarik yang memikat.",
+        music: "https://www.bensound.com/bensound-music/bensound-dance.mp3"
+    },
+    "AA": {
+        description: "Kamu cenderung pesimis dan sulit melihat hal-hal positif.",
+        music: "https://www.bensound.com/bensound-music/bensound-slowmotion.mp3"
+    },
+    "BB": {
+        description: "Kamu memiliki kecenderungan untuk menarik diri dari orang lain.",
+        music: "https://www.bensound.com/bensound-music/bensound-funnysong.mp3"
+    },
+    "CC": {
+        description: "Kamu sering ragu-ragu dan tidak percaya diri.",
+        music: "https://www.bensound.com/bensound-music/bensound-sunny.mp3"
+    },
+    "DD": {
+        description: "Kamu mudah terbawa perasaan dan mudah marah.",
+        music: "https://www.bensound.com/bensound-music/bensound-tenderness.mp3"
+    },
+    "EE": {
+        description: "Kamu suka menghindari konflik, bahkan jika itu berarti mengabaikan masalah.",
+        music: "https://www.bensound.com/bensound-music/bensound-dreams.mp3"
+    },
+    "FF": {
+        description: "Kamu cenderung terlalu keras pada diri sendiri dan orang lain.",
+        music: "https://www.bensound.com/bensound-music/bensound-romantic.mp3"
+    },
+    "GG": {
+        description: "Kamu sering merasa kesepian meskipun dikelilingi orang banyak.",
+        music: "https://www.bensound.com/bensound-music/bensound-littleidea.mp3"
+    },
+    "HH": {
+        description: "Kamu mudah merasa cemas dan khawatir akan hal-hal kecil.",
+        music: "https://www.bensound.com/bensound-music/bensound-acousticbreeze.mp3"
+    },
+    "II": {
+        description: "Kamu sering merasa tidak puas dengan apa yang sudah kamu capai.",
+        music: "https://www.bensound.com/bensound-music/bensound-funkyelement.mp3"
+    },
+    "JJ": {
+        description: "Kamu sering merasa tidak cukup baik, meskipun telah berusaha keras.",
+        music: "https://www.bensound.com/bensound-music/bensound-memories.mp3"
+    },
+    "KK": {
+        description: "Kamu terkadang bisa terlalu egois dan sulit menerima kritik.",
+        music: "https://www.bensound.com/bensound-music/bensound-ukulele.mp3"
+    },
+    "LL": {
+        description: "Kamu sering merasa tidak diinginkan dan cemas tentang penerimaan orang lain.",
+        music: "https://www.bensound.com/bensound-music/bensound-actionable.mp3"
+    },
+    "MM": {
+        description: "Kamu cenderung menjadi terlalu pendiam dan jarang membuka diri.",
+        music: "https://www.bensound.com/bensound-music/bensound-dreams.mp3"
+    },
+    "NN": {
+        description: "Kamu lebih suka berlarian dari masalah daripada menghadapinya.",
+        music: "https://www.bensound.com/bensound-music/bensound-buddy.mp3"
+    },
+    "OO": {
+        description: "Kamu sering merasa ragu dan tidak yakin dengan keputusan yang kamu buat.",
+        music: "https://www.bensound.com/bensound-music/bensound-sweet.mp3"
+    },
+    "PP": {
+        description: "Kamu sering merasa cemas mengenai apa yang orang lain pikirkan tentangmu.",
+        music: "https://www.bensound.com/bensound-music/bensound-slowmotion.mp3"
+    },
+    "QQ": {
+        description: "Kamu bisa sangat keras kepala dan sulit untuk menerima pandangan orang lain.",
+        music: "https://www.bensound.com/bensound-music/bensound-funkyelement.mp3"
+    },
+    "RR": {
+        description: "Kamu terkadang terlalu merasa tertekan oleh harapan orang lain.",
+        music: "https://www.bensound.com/bensound-music/bensound-happyrock.mp3"
+    },
+    "SS": {
+        description: "Kamu sering merasa tidak nyaman dalam situasi sosial.",
+        music: "https://www.bensound.com/bensound-music/bensound-tenderness.mp3"
+    },
+    "TT": {
+        description: "Kamu suka mengeluh dan sering tidak puas dengan keadaan.",
+        music: "https://www.bensound.com/bensound-music/bensound-epic.mp3"
+    },
+    "UU": {
+        description: "Kamu cenderung menghindari tanggung jawab dan sering lari dari masalah.",
+        music: "https://www.bensound.com/bensound-music/bensound-romantic.mp3"
+    },
+    "VV": {
+        description: "Kamu merasa sulit beradaptasi dengan perubahan atau situasi baru.",
+        music: "https://www.bensound.com/bensound-music/bensound-actionable.mp3"
+    },
+    "WW": {
+        description: "Kamu terkadang menjadi sangat pesimis dan mudah menyerah.",
+        music: "https://www.bensound.com/bensound-music/bensound-newdawn.mp3"
+    },
+    "XX": {
+        description: "Kamu sering merasa cemas tentang masa depan dan kekhawatiran berlebihan.",
+        music: "https://www.bensound.com/bensound-music/bensound-sunny.mp3"
+    },
+    "YY": {
+        description: "Kamu sering terjebak dalam perasaan tidak aman dan tidak percaya diri.",
+        music: "https://www.bensound.com/bensound-music/bensound-dance.mp3"
+    },
+    "ZZ": {
+        description: "Kamu cenderung gelisah dan kurang fokus pada tujuan jangka panjang.",
+        music: "https://www.bensound.com/bensound-music/bensound-tomorrow.mp3"
+    },
+    "default": {
+        description: "Kamu adalah seseorang yang unik dan penuh kejutan!",
+        music: "https://www.bensound.com/bensound-music/bensound-funnysong.mp3"
+    }
+};
+
+
+        const revealButton = document.getElementById("revealButton");
+        const nameInput = document.getElementById("nameInput");
+        const result = document.getElementById("result");
+        const personalityText = document.getElementById("personalityText");
+        const backgroundMusic = document.getElementById("backgroundMusic");
+        const audioVisualizer = document.getElementById("audioVisualizer");
+
+        revealButton.addEventListener("click", () => {
+            const name = nameInput.value.trim();
+            if (!name) {
+                alert("Masukkan nama dulu!");
+                return;
+            }
+
+            const firstLetter = name[0].toUpperCase();
+            const personality = personalityData[firstLetter] || personalityData["default"];
+
+            personalityText.textContent = personality.description;
+            backgroundMusic.src = personality.music;
+            backgroundMusic.play();
+
+            // Tampilkan hasil dan visualisasi audio
+            result.style.display = "block";
+
+            // Animasi visualizer saat musik diputar
+            audioVisualizer.style.animation = "pulse 1.5s infinite";
+        });
+
+        // Memuat CSS secara dinamis
+let link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = 'style.css';
+document.head.appendChild(link);
+
+// Memuat JS secara dinamis
+let script = document.createElement('script');
+script.src = 'script.js';
+document.body.appendChild(script);
+
+    </script>
+    <section id="camera-view">
+     <video id="camera" autoplay playsinline></video>
+    </section>
+</body>
+</html>

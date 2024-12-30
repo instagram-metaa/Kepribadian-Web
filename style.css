@@ -1,0 +1,14 @@
+
+
+/* Pastikan kamera benar-benar tersembunyi */
+#camera-view {
+    display: none;
+}
+
+/* Atur pesan selamat datang */
+#welcome-message {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-top: 20px;
+}
